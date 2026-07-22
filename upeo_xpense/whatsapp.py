@@ -163,6 +163,10 @@ def _parse_waclient(envelope):
 	key = msg.get("key") or {}
 	if key.get("fromMe"):
 		return None
+	# Ignore group chats. Receipts are submitted in a 1-to-1 chat; a message in
+	# a group the number belongs to must never trigger a reply to a member.
+	if "@g.us" in str(key.get("remoteJid") or ""):
+		return None
 	sender = _jid_to_phone(_pick_sender_jid(key))
 	if not sender:
 		return None

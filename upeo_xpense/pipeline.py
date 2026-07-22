@@ -67,6 +67,15 @@ def handle_incoming(payload):
 		return
 
 	phone = parsed["sender_phone"]
+
+	# Only ever respond to a number that belongs to a known, Active Employee.
+	# WAClient forwards every message the WhatsApp account can see - wrong
+	# numbers, customers, group chats - and we must never send an unsolicited
+	# "send a receipt" prompt to someone who did not opt in by being an
+	# employee. Unknown senders are ignored in complete silence.
+	if not find_employee(phone):
+		return
+
 	try:
 		if parsed["message_type"] == "image" and parsed.get("media_url"):
 			ingest(
