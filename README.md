@@ -47,7 +47,9 @@
 19. [Security](#-security)
 20. [Roadmap](#-roadmap)
 21. [Contributing](#-contributing)
-22. [License & Credits](#-license--credits)
+22. [About Upeosoft](#-about-upeosoft)
+23. [Further Reading](#-further-reading)
+24. [License & Credits](#-license--credits)
 
 ---
 
@@ -61,7 +63,7 @@ No forms. No apps to install for staff. No lost paper receipts. No end-of-month 
 
 UpeoXpense reads receipts with **Claude AI vision**, validates every field with plain, auditable Python (the AI never makes the decision — it only reads), and records the expense directly inside ERPNext where your accountants already work. A clean, gold-on-charcoal **Vue 3 dashboard** at `/upeoxpense` gives managers a real-time view of spend, an approval queue, category mapping, and settings.
 
-Built by **[Upeosoft Limited](https://upeosoft.com)** for real Kenyan finance workflows — **KRA PIN** validation, **16% VAT**-inclusive maths, **eTIMS** invoice numbers, and **M-Pesa** as a first-class payment method.
+Built by **[Upeosoft Limited](https://upeosoft.com)** — the team behind **[upeo.ai](https://upeo.ai)** — for real Kenyan finance workflows: **KRA PIN** validation, **16% VAT**-inclusive maths, **eTIMS** invoice numbers, and **M-Pesa** as a first-class payment method.
 
 ---
 
@@ -160,6 +162,8 @@ sequenceDiagram
 
 **What the staff member experiences** — one photo, one reply. That's the entire workload for the person spending the money.
 
+> 📖 **Related read:** [*A WhatsApp assistant for a retail counter — what we built and what we learned*](https://upeo.ai/blog/retail-whatsapp-assistant-case-study) on the [upeo.ai](https://upeo.ai) blog, on turning WhatsApp into a real business channel.
+
 **The reply grammar:**
 
 | Reply | Meaning |
@@ -205,6 +209,8 @@ stateDiagram-v2
 6. **Log & confirm** — create the `Receipt Capture`, resolve its category (Vendor Mapping → AI suggestion → default), and WhatsApp the sender for confirmation.
 
 > **Design principle:** *Claude never makes a decision.* It returns data and a confidence score; auditable Python decides what happens next. The verbatim AI response is always stored on the record for traceability.
+
+> 📖 **See the idea in action:** [*"I gave it a photo of a handwritten delivery note. Watch."*](https://upeo.ai/blog/photo-of-a-delivery-note-watch) walks through the same photo-to-structured-data extraction UpeoXpense uses for receipts, and [*Putting AI on your own documents without it making things up*](https://upeo.ai/blog/rag-on-your-documents) explains the read-don't-decide philosophy behind it.
 
 ---
 
@@ -488,6 +494,8 @@ flowchart TB
 
 Entries post on the **approval date** (not the receipt date) to avoid closed fiscal periods, and every receipt links to its Journal Entry for a clean audit trail.
 
+> 📖 **Related read:** [*Connecting Payments to Your Accounting System So the Ledger Updates Itself*](https://upeosoft.com/insights/connect-payments-to-accounting-erp) — the same automate-the-ledger philosophy that drives UpeoXpense's postings.
+
 ---
 
 ## 🔌 API Reference
@@ -558,7 +566,7 @@ No. Claude only *reads* the receipt and returns data with a confidence score. Ev
 <details>
 <summary><strong>Which currencies and countries are supported?</strong></summary>
 
-Currency defaults to **KES** and Kenyan tax features (KRA PIN, 16% VAT, eTIMS, M-Pesa) are first-class, but the core capture → validate → approve → post flow works with any ERPNext company and currency.
+Currency defaults to **KES** and Kenyan tax features (KRA PIN, 16% VAT, eTIMS, M-Pesa) are first-class, but the core capture → validate → approve → post flow works with any ERPNext company and currency. For the tax context, see [*eTIMS vs Manual KRA Filing: What You Need to Know in 2026*](https://upeosoft.com/insights/etims-vs-manual-kra-filing).
 </details>
 
 <details>
@@ -609,11 +617,51 @@ ruff format .
 
 ---
 
+## 🏢 About Upeosoft
+
+UpeoXpense is built by **[Upeosoft Limited](https://upeosoft.com)** — a Kenyan software and automation company that builds the systems that run real businesses: custom software, **ERPNext implementation & support**, and practical AI automation for dealerships, clinics, schools and factories. Upeosoft is also the team behind **[upeo.ai](https://upeo.ai)**, an AI platform that connects to your communications, workflows and business data and handles the work that slows teams down — securely, accurately, around the clock.
+
+If UpeoXpense is useful to you, here's where to go next:
+
+- 🌐 **[upeosoft.com](https://upeosoft.com)** — custom software, ERPNext & business integrations (M-Pesa, Shopify, WhatsApp, APIs)
+- 🤖 **[upeo.ai](https://upeo.ai)** — AI agents and copilots that run *inside* your systems
+- 🩺 **[UpeoAudit](https://audit.upeo.ai)** — a free ERPNext health assessment
+
+---
+
+## 📚 Further Reading
+
+More on the ideas behind UpeoXpense, from the [Upeosoft](https://upeosoft.com/insights) and [upeo.ai](https://upeo.ai/blog) blogs — all written by Karani Geoffrey:
+
+**AI reading real-world documents**
+- [*"I gave it a photo of a handwritten delivery note. Watch."*](https://upeo.ai/blog/photo-of-a-delivery-note-watch) — the same photo-to-structured-data idea UpeoXpense uses for receipts.
+- [*Putting AI on your own documents without it making things up*](https://upeo.ai/blog/rag-on-your-documents) — why UpeoXpense lets AI **read** but never **decide**.
+- [*What it looks like when AI runs inside the system*](https://upeo.ai/blog/what-it-looks-like-when-ai-runs-inside-the-system) — AI embedded in the ERP, not bolted on.
+
+**WhatsApp as a business channel**
+- [*A WhatsApp assistant for a retail counter: what we built and what we learned*](https://upeo.ai/blog/retail-whatsapp-assistant-case-study)
+
+**Kenyan finance, tax & the ledger**
+- [*eTIMS vs Manual KRA Filing: What You Need to Know in 2026*](https://upeosoft.com/insights/etims-vs-manual-kra-filing) — the KRA/eTIMS context behind UpeoXpense's validation.
+- [*Connecting Payments to Your Accounting System So the Ledger Updates Itself*](https://upeosoft.com/insights/connect-payments-to-accounting-erp) — the philosophy behind UpeoXpense's automatic Journal Entries.
+- [*How to Automatically Record M-Pesa Payments from the Confirmation SMS*](https://upeosoft.com/insights/record-mpesa-payments-from-sms)
+- [*How to Reconcile M-Pesa Till Payments Without Daraja API Access*](https://upeosoft.com/insights/reconcile-till-payments-without-daraja)
+
+**Thinking about AI for your business?**
+- [*Where to actually start with AI in your business*](https://upeo.ai/blog/getting-started-with-ai)
+- [*Before you pay anyone for AI, check these six things*](https://upeo.ai/blog/six-things-to-check-before-you-pay-for-ai)
+
+---
+
 ## 📄 License & Credits
 
 **UpeoXpense** is released under the **MIT License** — see [license.txt](license.txt).
 
-Built and maintained by **Karani Geoffrey** at **[Upeosoft Limited](https://upeosoft.com)**.
+Built and maintained by **Karani Geoffrey**, Founder & CEO of **[Upeosoft Limited](https://upeosoft.com)** — maker of **[upeo.ai](https://upeo.ai)**.
+
+- 🌐 Web — [upeosoft.com](https://upeosoft.com) · [upeo.ai](https://upeo.ai)
+- 📧 Email — [hello@upeo.ai](mailto:hello@upeo.ai)
+- 🩺 Free ERPNext health check — [UpeoAudit](https://audit.upeo.ai)
 
 <p align="center">
   <sub>Made in 🇰🇪 Kenya · Snap a receipt on WhatsApp, and let ERPNext do the rest.</sub>
