@@ -20,6 +20,18 @@ from upeo_xpense import pipeline
 
 RECEIPT = "Receipt Capture"
 CLAIM = "Expense Claim"
+
+# "Expense claims" in this app are reimbursable expenses: Receipt Captures the
+# employee paid and must be reimbursed for. They are settled via Journal Entries
+# (not the hrms Expense Claim doctype), so the claims views read Receipt Capture.
+CLAIM_RECEIPT_STATUSES = ("Awaiting Approval", "Approved", "Reimbursed", "Rejected")
+_CLAIM_STATUS_FILTER = {
+	"Awaiting Approval": ["Awaiting Approval"],
+	"Approved": ["Approved"],
+	"Reimbursed": ["Reimbursed"],
+	"Rejected": ["Rejected"],
+	"Draft": ["Awaiting Approval"],
+}
 SETTINGS = "UpeoXpense Settings"
 
 # Order used for status pills and grouping in the UI.
@@ -372,95 +384,98 @@ def receipt_action(name, action, amount=None, reason=None, raise_claim=None):
 # ---------------------------------------------------------------------------
 @frappe.whitelist()
 def claims(status=None, start=0, limit=20):
+	"""List reimbursable expenses (Receipt Capture, needs_claim=1). These are the
+	app's expense claims; they are settled via Journal Entries, not hrms claims."""
 	_require_login()
-	filters = {}
-	if status and status != "All":
-		filters["approval_status"] = status
+	filters = {"needs_claim": 1}
+	wanted = _CLAIM_STATUS_FILTER.get(status)
+	if status in (None, "", "All") or wanted is None:
+		wanted = list(CLAIM_RECEIPT_STATUSES)
+	filters["status"] = ["in", wanted]
 	rows = frappe.get_list(
-		CLAIM,
+		RECEIPT,
 		filters=filters,
-		fields=[
-			"name",
-			"employee",
-			"employee_name",
-			"approval_status",
-			"docstatus",
-			"posting_date",
-			"total_claimed_amount",
-			"total_sanctioned_amount",
-			"company",
-			"modified",
-		],
+		fields=["name", "employee", "gross_amount", "status", "receipt_date", "modified"],
 		order_by="modified desc",
 		start=int(start),
 		page_length=int(limit),
 	)
-	return {"rows": rows}
+	names = {}
+	return {"rows": [_claim_row(r, names) for r in rows]}
+
+
+def _claim_row(r, names):
+	emp = r.get("employee")
+	if emp and emp not in names:
+		names[emp] = frappe.db.get_value("Employee", emp, "employee_name")
+	approved = r.get("status") in ("Approved", "Reimbursed")
+	return {
+		"name": r.get("name"),
+		"employee": emp,
+		"employee_name": names.get(emp),
+		"approval_status": r.get("status"),
+		"docstatus": 1 if approved else 0,
+		"posting_date": r.get("receipt_date"),
+		"total_claimed_amount": r.get("gross_amount"),
+		"total_sanctioned_amount": r.get("gross_amount") if approved else 0,
+		"modified": r.get("modified"),
+	}
 
 
 @frappe.whitelist()
 def claim(name):
 	_require_login()
-	doc = frappe.get_doc(CLAIM, name)
+	doc = frappe.get_doc(RECEIPT, name)
 	doc.check_permission("read")
+	approved = doc.status in ("Approved", "Reimbursed")
+	category = doc.expense_claim_type or doc.suggested_category or "Uncategorised"
+	company = (frappe.db.get_value("Employee", doc.employee, "company") if doc.employee else None) or frappe.db.get_single_value(SETTINGS, "default_company")
 	expenses = [
 		{
-			"expense_date": e.expense_date,
-			"expense_type": e.expense_type,
-			"description": e.description,
-			"amount": e.amount,
-			"sanctioned_amount": e.sanctioned_amount,
+			"expense_date": doc.receipt_date,
+			"expense_type": category,
+			"description": doc.vendor_name or "-",
+			"amount": doc.gross_amount,
+			"sanctioned_amount": doc.gross_amount if approved else None,
 		}
-		for e in doc.expenses
 	]
-	linked_receipt = frappe.db.get_value(RECEIPT, {"expense_claim": name}, "name")
 	return {
 		"doc": {
 			"name": doc.name,
 			"employee": doc.employee,
-			"employee_name": doc.employee_name,
-			"approval_status": doc.approval_status,
-			"docstatus": doc.docstatus,
-			"posting_date": doc.posting_date,
-			"company": doc.company,
-			"total_claimed_amount": doc.total_claimed_amount,
-			"total_sanctioned_amount": doc.total_sanctioned_amount,
-			"remark": doc.remark,
+			"employee_name": frappe.db.get_value("Employee", doc.employee, "employee_name") if doc.employee else None,
+			"approval_status": doc.status,
+			"docstatus": 1 if approved else 0,
+			"posting_date": doc.receipt_date,
+			"company": company,
+			"total_claimed_amount": doc.gross_amount,
+			"total_sanctioned_amount": doc.gross_amount if approved else None,
+			"remark": doc.rejection_reason or doc.notes or None,
 		},
 		"expenses": expenses,
-		"linked_receipt": linked_receipt,
-		"can_approve": doc.has_permission("submit"),
+		"linked_receipt": doc.name,
+		"can_approve": _can_approve() and doc.status == "Awaiting Approval",
+		"reimbursable": True,
+		"can_reimburse": _can_approve() and doc.status == "Approved",
 	}
 
 
 @frappe.whitelist()
 def claim_action(name, action, reason=None):
-	"""Approve or reject an Expense Claim. Uses hrms's own approval fields, so
-	Expense Approver / submit permissions are enforced by the document."""
+	"""A claim here is a reimbursable Receipt Capture. Approve / reject / reimburse
+	it through the same pipeline the Expenses view uses."""
 	_require_login()
-	doc = frappe.get_doc(CLAIM, name)
-
+	_require_approver()
 	if action == "approve":
-		doc.check_permission("submit")
-		doc.approval_status = "Approved"
-		if doc.docstatus == 0:
-			doc.submit()
-		else:
-			doc.save()
+		pipeline.approve_expense(name, approver=frappe.session.user)
 	elif action == "reject":
-		doc.check_permission("submit")
-		doc.approval_status = "Rejected"
-		if reason:
-			doc.remark = reason
-		if doc.docstatus == 0:
-			doc.submit()
-		else:
-			doc.save()
+		pipeline.reject_expense(name, reason=reason, approver=frappe.session.user)
+	elif action == "reimburse":
+		pipeline.reimburse_expense(name, approver=frappe.session.user)
 	else:
 		frappe.throw(_("Unknown action."))
-
-	doc.reload()
-	return {"approval_status": doc.approval_status, "docstatus": doc.docstatus}
+	doc = frappe.get_doc(RECEIPT, name)
+	return {"approval_status": doc.status, "docstatus": 1 if doc.status in ("Approved", "Reimbursed") else 0}
 
 
 # ---------------------------------------------------------------------------

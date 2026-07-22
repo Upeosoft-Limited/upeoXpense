@@ -7,8 +7,8 @@ import { money, shortDate, fromNow } from "../format.js";
 
 const toast = inject("toast");
 
-const FILTERS = ["All", "Draft", "Approved", "Rejected"];
-const filter = ref("Draft");
+const FILTERS = ["All", "Awaiting Approval", "Approved", "Reimbursed", "Rejected"];
+const filter = ref("All");
 const loading = ref(true);
 const rows = ref([]);
 
@@ -75,7 +75,7 @@ onMounted(load);
 	<div class="ux-toolbar">
 		<div class="ux-chips">
 			<button v-for="f in FILTERS" :key="f" class="ux-chip" :class="{ active: filter === f }" @click="filter = f">
-				{{ f === "Draft" ? "Awaiting approval" : f }}
+				{{ f }}
 			</button>
 		</div>
 	</div>
@@ -84,10 +84,10 @@ onMounted(load);
 		<table class="ux-table">
 			<thead>
 				<tr>
-					<th>Claim</th>
+					<th>Expense</th>
 					<th>Employee</th>
-					<th class="num">Claimed</th>
-					<th class="num">Sanctioned</th>
+					<th class="num">Amount</th>
+					<th class="num">Approved</th>
 					<th>Status</th>
 					<th class="num">Updated</th>
 				</tr>
@@ -124,8 +124,8 @@ onMounted(load);
 			</div>
 
 			<dl class="ux-fields">
-				<div><dt>Claimed</dt><dd class="strong">{{ money(detail.data.doc.total_claimed_amount) }}</dd></div>
-				<div><dt>Sanctioned</dt><dd>{{ money(detail.data.doc.total_sanctioned_amount) }}</dd></div>
+				<div><dt>Amount</dt><dd class="strong">{{ money(detail.data.doc.total_claimed_amount) }}</dd></div>
+				<div><dt>Approved</dt><dd>{{ money(detail.data.doc.total_sanctioned_amount) }}</dd></div>
 				<div><dt>Company</dt><dd>{{ detail.data.doc.company }}</dd></div>
 				<div><dt>Linked receipt</dt><dd>{{ detail.data.linked_receipt || "-" }}</dd></div>
 			</dl>
