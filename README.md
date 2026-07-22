@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  WhatsApp-first expense management for <a href="https://frappe.io">Frappe</a> &amp; <a href="https://erpnext.com">ERPNext</a>, powered by Claude AI vision — built for Kenyan businesses (KRA PIN, 16% VAT, eTIMS, M-Pesa).
+  WhatsApp-first expense management for <a href="https://frappe.io">Frappe</a> &amp; <a href="https://erpnext.com">ERPNext</a>, powered by Claude AI vision — for <strong>any</strong> business running ERPNext, anywhere in the world, with first-class support for Kenyan tax (KRA PIN, 16% VAT, eTIMS, M-Pesa).
 </p>
 
 <p align="center">
@@ -47,9 +47,10 @@
 19. [Security](#-security)
 20. [Roadmap](#-roadmap)
 21. [Contributing](#-contributing)
-22. [About Upeosoft](#-about-upeosoft)
-23. [Further Reading](#-further-reading)
-24. [License & Credits](#-license--credits)
+22. [Make It Yours: Adapt It to Your Stack](#-make-it-yours-adapt-it-to-your-stack)
+23. [About Upeosoft](#-about-upeosoft)
+24. [Further Reading](#-further-reading)
+25. [License & Credits](#-license--credits)
 
 ---
 
@@ -63,7 +64,7 @@ No forms. No apps to install for staff. No lost paper receipts. No end-of-month 
 
 UpeoXpense reads receipts with **Claude AI vision**, validates every field with plain, auditable Python (the AI never makes the decision — it only reads), and records the expense directly inside ERPNext where your accountants already work. A clean, gold-on-charcoal **Vue 3 dashboard** at `/upeoxpense` gives managers a real-time view of spend, an approval queue, category mapping, and settings.
 
-Built by **[Upeosoft Limited](https://upeosoft.com)** — the team behind **[upeo.ai](https://upeo.ai)** — for real Kenyan finance workflows: **KRA PIN** validation, **16% VAT**-inclusive maths, **eTIMS** invoice numbers, and **M-Pesa** as a first-class payment method.
+It works for **any organisation running ERPNext**, anywhere in the world — and ships with real Kenyan finance workflows built in: **KRA PIN** validation, **16% VAT**-inclusive maths, **eTIMS** invoice numbers, and **M-Pesa** as a first-class payment method (none of them a hard requirement). And the stack is swappable: a different AI model, a different WhatsApp gateway, even a different back-office system — see [Make It Yours](#-make-it-yours-adapt-it-to-your-stack). Built by **[Upeosoft Limited](https://upeosoft.com)**, the team behind **[upeo.ai](https://upeo.ai)**.
 
 ---
 
@@ -91,7 +92,8 @@ Built by **[Upeosoft Limited](https://upeosoft.com)** — the team behind **[upe
 - 📊 **Real-time analytics** — captured value, spend trend, top vendors, category split, pending reimbursements — all live.
 - 🧾 **Automatic ledger postings** — company-paid (petty cash) and employee-reimbursable expenses each post correct **Journal Entries** to ERPNext.
 - 🔁 **Self-healing retries** — transient AI/network failures back off gracefully (1m → 5m → 15m → 1h) via a per-minute scheduler.
-- 🇰🇪 **Kenya-ready** — KRA, VAT, eTIMS and M-Pesa built in; currency defaults to KES but works anywhere.
+- 🌍 **Works anywhere, Kenya built-in** — runs for any ERPNext company and currency; KRA PIN, 16% VAT, eTIMS and M-Pesa ship as first-class features, not a hard requirement.
+- 🧩 **Swappable stack** — a different AI model, a different WhatsApp gateway, or even a different back-office system? The pipeline is layered so the pieces can be changed — see [Make It Yours](#-make-it-yours-adapt-it-to-your-stack).
 
 ---
 
@@ -614,6 +616,19 @@ ruff check .
 # format
 ruff format .
 ```
+
+---
+
+## 🧩 Make It Yours: Adapt It to Your Stack
+
+UpeoXpense ships wired to a sensible default stack — **ERPNext**, **Claude** vision, and the **WAClient** WhatsApp gateway — but none of that is locked in. The pipeline is deliberately layered so each piece can be swapped:
+
+- **🔄 Other systems, not just ERPNext.** The same *capture → read → validate → post* pattern works against other ERPs and line-of-business systems — accounting suites, POS platforms, custom back-offices. Not on ERPNext? [Upeosoft](https://upeosoft.com) can build the same flow into the system you already run.
+- **🧠 A different AI provider.** Extraction is isolated behind a small model layer (today: Claude Haiku 4.5 → Opus 4.8). Prefer OpenAI, Google Gemini, an open-weights model, or an on-prem / self-hosted setup for data sovereignty? That's a contained change — talk to [upeo.ai](https://upeo.ai).
+- **💬 A different WhatsApp — or a different channel entirely.** All messaging lives behind two functions (`send_text` / `parse_webhook`), so WAClient can be replaced with the **Meta WhatsApp Cloud API**, **Twilio**, or another gateway — or extended to **Telegram, SMS or email** — without touching the pipeline.
+- **🛠 Your own rules & workflows.** Approval thresholds, category logic, country-specific tax rules, extra validations, custom dashboards and reports — all fair game.
+
+> **Want a variation of this for your business?** Whatever your stack, **[Upeosoft](https://upeosoft.com) / [upeo.ai](https://upeo.ai) can set it up for you** — a different AI, a different messaging channel, or the whole capture-to-ledger flow on a different system. [Get in touch](https://upeo.ai/strategy-session), or start with a free [ERPNext health check](https://audit.upeo.ai).
 
 ---
 
