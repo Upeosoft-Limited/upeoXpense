@@ -1,0 +1,47 @@
+---
+no_cache: 1
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+	<title>UpeoXpense</title>
+	<link rel="icon" href="/assets/upeo_xpense/images/favicon.svg" type="image/svg+xml" />
+	<style>
+		html, body { margin: 0; padding: 0; height: 100%; background: #14110a; }
+		#upeoxpense-boot {
+			position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+			background: #14110a; color: #d4af37; font-family: system-ui, sans-serif; z-index: 1;
+		}
+		#upeoxpense-boot .dot { width: 10px; height: 10px; border-radius: 50%; background: #d4af37;
+			margin: 0 4px; display: inline-block; animation: ux-b 1s infinite ease-in-out; }
+		#upeoxpense-boot .dot:nth-child(2) { animation-delay: .15s; }
+		#upeoxpense-boot .dot:nth-child(3) { animation-delay: .3s; }
+		@keyframes ux-b { 0%, 80%, 100% { opacity: .25; transform: scale(.8); } 40% { opacity: 1; transform: scale(1); } }
+	</style>
+</head>
+<body>
+	<div id="upeoxpense-boot"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+	<div id="upeoxpense-app"></div>
+	<script>
+		window.upeoxpense = {
+			csrf_token: "{{ csrf_token }}",
+			user: "{{ boot_user }}",
+			full_name: "{{ boot_full_name }}"
+		};
+		// The Vue bundle injects its component styles through frappe.dom.set_style.
+		// This standalone page does not load the Frappe desk, so provide the one
+		// function the bundle needs.
+		window.frappe = window.frappe || {};
+		window.frappe.dom = window.frappe.dom || {
+			set_style: function (css) {
+				var el = document.createElement("style");
+				el.textContent = css;
+				document.head.appendChild(el);
+			}
+		};
+	</script>
+	{{ include_script('upeoxpense.bundle.js') }}
+</body>
+</html>

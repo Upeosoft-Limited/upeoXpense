@@ -1,0 +1,70 @@
+{
+ "charts": [],
+ "content": "[{\"id\": \"hdr_intro\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>UpeoXpense</b></span>\", \"col\": 12}}, {\"id\": \"hdr_open\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Open the app</b></span>\", \"col\": 12}}, {\"id\": \"sc_open\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Open UpeoXpense App\", \"col\": 4}}, {\"id\": \"card_month\", \"type\": \"card\", \"data\": {\"card_name\": \"Receipts This Month\", \"col\": 4}}, {\"id\": \"hdr_sc\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Shortcuts</b></span>\", \"col\": 12}}, {\"id\": \"sc_all\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"All Receipts\", \"col\": 3}}, {\"id\": \"sc_await\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Awaiting Approval\", \"col\": 3}}, {\"id\": \"sc_claims\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Expense Claims\", \"col\": 3}}, {\"id\": \"sc_failed\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Failed\", \"col\": 3}}, {\"id\": \"sc_settings\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"UpeoXpense Settings\", \"col\": 3}}]",
+ "creation": "2026-07-21 00:00:00",
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "expenses",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "UpeoXpense",
+ "links": [],
+ "modified": "2026-07-21 00:00:00",
+ "module": "UpeoXpense",
+ "name": "UpeoXpense",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "label": "Open UpeoXpense App",
+   "type": "URL",
+   "url": "/upeoxpense"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "All Receipts",
+   "link_to": "Receipt Capture",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "label": "Awaiting Approval",
+   "link_to": "Receipt Capture",
+   "stats_filter": "{\"status\":\"Awaiting Approval\"}",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Expense Claims",
+   "link_to": "Expense Claim",
+   "type": "DocType"
+  },
+  {
+   "color": "Red",
+   "doc_view": "List",
+   "label": "Failed",
+   "link_to": "Receipt Capture",
+   "stats_filter": "{\"status\":\"Failed\"}",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "label": "UpeoXpense Settings",
+   "link_to": "UpeoXpense Settings",
+   "type": "DocType"
+  }
+ ],
+ "title": "UpeoXpense",
+ "type": "Workspace"
+}

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-label="UpeoXpense — WhatsApp receipt capture and AI expense claims for ERPNext">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14110a"/>
+      <stop offset="1" stop-color="#241d0e"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f4d675"/>
+      <stop offset="1" stop-color="#d4af37"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="360" rx="24" fill="url(#bg)"/>
+  <g opacity="0.10" stroke="#d4af37" stroke-width="1">
+    <path d="M0 90 H1200 M0 180 H1200 M0 270 H1200"/>
+    <path d="M300 0 V360 M600 0 V360 M900 0 V360"/>
+  </g>
+
+  <!-- Logo mark -->
+  <g transform="translate(80,110)">
+    <rect width="140" height="140" rx="34" fill="#0d0b06" stroke="url(#gold)" stroke-width="2"/>
+    <text x="70" y="102" font-family="system-ui, Segoe UI, sans-serif" font-size="96" font-weight="800" fill="url(#gold)" text-anchor="middle">U</text>
+  </g>
+
+  <!-- WhatsApp glyph -->
+  <g transform="translate(120,70)" filter="url(#soft)">
+    <circle cx="0" cy="0" r="26" fill="#25D366"/>
+    <path d="M-11 8 a15 15 0 1 1 6 5 l-7 2 z" fill="#0d0b06"/>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(270,150)">
+    <text font-family="system-ui, Segoe UI, sans-serif" font-size="76" font-weight="800" fill="#faf6ea">Upeo<tspan fill="url(#gold)">Xpense</tspan></text>
+    <text y="58" font-family="system-ui, Segoe UI, sans-serif" font-size="27" font-weight="500" fill="#cbbf9a">Snap a receipt on WhatsApp. AI files the expense claim in ERPNext.</text>
+    <g transform="translate(0,96)" font-family="system-ui, Segoe UI, sans-serif" font-size="19" font-weight="600">
+      <rect width="150" height="38" rx="19" fill="#0d0b06" stroke="#d4af37" stroke-opacity="0.5"/>
+      <text x="75" y="25" fill="#d4af37" text-anchor="middle">Frappe · ERPNext</text>
+      <rect x="166" width="150" height="38" rx="19" fill="#0d0b06" stroke="#d4af37" stroke-opacity="0.5"/>
+      <text x="241" y="25" fill="#d4af37" text-anchor="middle">Claude AI Vision</text>
+      <rect x="332" width="180" height="38" rx="19" fill="#0d0b06" stroke="#d4af37" stroke-opacity="0.5"/>
+      <text x="422" y="25" fill="#d4af37" text-anchor="middle">KRA · VAT · eTIMS</text>
+    </g>
+  </g>
+</svg>

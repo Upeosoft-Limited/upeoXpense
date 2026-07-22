@@ -1,0 +1,190 @@
+{
+ "actions": [],
+ "creation": "2026-07-21 00:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "whatsapp_section",
+  "waclient_base_url",
+  "waclient_instance_id",
+  "waclient_access_token",
+  "webhook_token",
+  "anthropic_section",
+  "anthropic_api_key",
+  "defaults_section",
+  "default_expense_claim_type",
+  "default_company",
+  "default_cost_center",
+  "column_break_defaults",
+  "minimum_confidence",
+  "maximum_receipt_age_days",
+  "posting_section",
+  "company_paid_account",
+  "reimbursement_hold_account",
+  "column_break_posting",
+  "reimbursement_payable_account",
+  "reimbursement_paid_from_account",
+  "test_section",
+  "test_phone",
+  "test_connection"
+ ],
+ "fields": [
+  {
+   "fieldname": "whatsapp_section",
+   "fieldtype": "Section Break",
+   "label": "WhatsApp (WAClient)"
+  },
+  {
+   "fieldname": "waclient_base_url",
+   "fieldtype": "Data",
+   "label": "WAClient Base URL",
+   "default": "https://waclient.com"
+  },
+  {
+   "fieldname": "waclient_instance_id",
+   "fieldtype": "Data",
+   "label": "WAClient Instance ID"
+  },
+  {
+   "fieldname": "waclient_access_token",
+   "fieldtype": "Password",
+   "label": "WAClient Access Token"
+  },
+  {
+   "fieldname": "webhook_token",
+   "fieldtype": "Data",
+   "label": "Webhook Token",
+   "description": "Shared secret appended to the webhook URL as ?token=... . WAClient sends no signature, so we verify this instead."
+  },
+  {
+   "fieldname": "anthropic_section",
+   "fieldtype": "Section Break",
+   "label": "Anthropic"
+  },
+  {
+   "fieldname": "anthropic_api_key",
+   "fieldtype": "Password",
+   "label": "Anthropic API Key"
+  },
+  {
+   "fieldname": "defaults_section",
+   "fieldtype": "Section Break",
+   "label": "Defaults"
+  },
+  {
+   "fieldname": "default_expense_claim_type",
+   "fieldtype": "Link",
+   "label": "Default Expense Claim Type",
+   "options": "Expense Claim Type"
+  },
+  {
+   "fieldname": "default_company",
+   "fieldtype": "Link",
+   "label": "Default Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "default_cost_center",
+   "fieldtype": "Link",
+   "label": "Default Cost Center",
+   "options": "Cost Center",
+   "description": "Booked against every expense row when a reimbursement claim is raised. Expense Claim requires a cost center."
+  },
+  {
+   "fieldname": "column_break_defaults",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "minimum_confidence",
+   "fieldtype": "Float",
+   "label": "Minimum Confidence To Auto-Proceed",
+   "default": "0.7",
+   "precision": "2",
+   "description": "Below this, extraction is retried once with a stronger model."
+  },
+  {
+   "fieldname": "maximum_receipt_age_days",
+   "fieldtype": "Int",
+   "label": "Maximum Receipt Age (days)",
+   "default": "90"
+  },
+  {
+   "fieldname": "posting_section",
+   "fieldtype": "Section Break",
+   "label": "Reimbursement and posting accounts"
+  },
+  {
+   "fieldname": "company_paid_account",
+   "fieldtype": "Link",
+   "label": "Company Paid From Account",
+   "options": "Account",
+   "description": "Credited when a company-paid (petty cash) expense is approved. The expense hits its category account immediately."
+  },
+  {
+   "fieldname": "reimbursement_hold_account",
+   "fieldtype": "Link",
+   "label": "Reimbursement Hold Account",
+   "options": "Account",
+   "description": "Temporary account holding approved reimbursable expenses until the employee is refunded. It clears into the expense account on reimbursement."
+  },
+  {
+   "fieldname": "column_break_posting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reimbursement_payable_account",
+   "fieldtype": "Link",
+   "label": "Reimbursement Payable Account",
+   "options": "Account",
+   "description": "Liability account for what the company owes employees for approved reimbursable expenses."
+  },
+  {
+   "fieldname": "reimbursement_paid_from_account",
+   "fieldtype": "Link",
+   "label": "Reimbursement Paid From Account",
+   "options": "Account",
+   "description": "Cash or bank account the reimbursement is paid out of when an expense is marked refunded."
+  },
+  {
+   "fieldname": "test_section",
+   "fieldtype": "Section Break",
+   "label": "Test Connection"
+  },
+  {
+   "fieldname": "test_phone",
+   "fieldtype": "Data",
+   "label": "Test Phone Number",
+   "options": "Phone",
+   "description": "A WhatsApp number to send a test message to."
+  },
+  {
+   "fieldname": "test_connection",
+   "fieldtype": "Button",
+   "label": "Send Test Message"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-21 00:00:00",
+ "module": "UpeoXpense",
+ "name": "UpeoXpense Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

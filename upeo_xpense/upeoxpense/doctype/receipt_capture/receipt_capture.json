@@ -1,0 +1,374 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "naming_series:",
+ "creation": "2026-07-21 00:00:00",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "receipt_section",
+  "naming_series",
+  "employee",
+  "sender_phone",
+  "status",
+  "column_break_intake",
+  "receipt_file",
+  "file_hash",
+  "image_phash",
+  "retry_count",
+  "next_retry_at",
+  "duplicate_of",
+  "extract_section",
+  "vendor_name",
+  "vendor_email",
+  "receipt_date",
+  "currency",
+  "payment_method",
+  "suggested_category",
+  "line_items",
+  "column_break_extract",
+  "gross_amount",
+  "vat_amount",
+  "kra_pin",
+  "etims_invoice_number",
+  "receipt_number",
+  "expense_claim_type",
+  "claim_section",
+  "expense_claim",
+  "needs_claim",
+  "journal_entry",
+  "reimbursement_journal_entry",
+  "reimbursed_by",
+  "reimbursed_at",
+  "approval_section",
+  "rejection_reason",
+  "decided_by",
+  "decided_at",
+  "diagnostics_section",
+  "confidence",
+  "notes",
+  "validation_errors",
+  "error_message",
+  "raw_extract"
+ ],
+ "fields": [
+  {
+   "fieldname": "receipt_section",
+   "fieldtype": "Section Break",
+   "label": "Receipt"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "RCPT-.YYYY.-",
+   "default": "RCPT-.YYYY.-",
+   "reqd": 1,
+   "print_hide": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "sender_phone",
+   "fieldtype": "Data",
+   "label": "Sender Phone",
+   "options": "Phone"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Queued\nExtracting\nAwaiting Approval\nApproved\nReimbursed\nRejected\nDuplicate\nFailed",
+   "default": "Queued",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_intake",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "receipt_file",
+   "fieldtype": "Attach Image",
+   "label": "Receipt Image",
+   "description": "The original, never deleted. It is the audit artifact."
+  },
+  {
+   "fieldname": "file_hash",
+   "fieldtype": "Data",
+   "label": "File Hash (SHA-256)",
+   "read_only": 1,
+   "search_index": 1,
+   "description": "SHA-256 of the original bytes. Uniqueness is enforced in the ingestion code."
+  },
+  {
+   "fieldname": "image_phash",
+   "fieldtype": "Data",
+   "label": "Image Perceptual Hash",
+   "search_index": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "retry_count",
+   "fieldtype": "Int",
+   "label": "Retry Count",
+   "default": "0",
+   "read_only": 1
+  },
+  {
+   "fieldname": "next_retry_at",
+   "fieldtype": "Datetime",
+   "label": "Next Retry At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "duplicate_of",
+   "fieldtype": "Link",
+   "label": "Duplicate Of",
+   "options": "Receipt Capture",
+   "read_only": 1
+  },
+  {
+   "fieldname": "extract_section",
+   "fieldtype": "Section Break",
+   "label": "Extracted Details"
+  },
+  {
+   "fieldname": "vendor_name",
+   "fieldtype": "Data",
+   "label": "Vendor Name",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "vendor_email",
+   "fieldtype": "Data",
+   "label": "Vendor Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "receipt_date",
+   "fieldtype": "Date",
+   "label": "Receipt Date"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "default": "KES"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "\nCash\nCard\nM-Pesa\nBank\nOther"
+  },
+  {
+   "fieldname": "suggested_category",
+   "fieldtype": "Data",
+   "label": "Suggested Category",
+   "read_only": 1,
+   "description": "Claude's suggestion only. Python decides the real category."
+  },
+  {
+   "fieldname": "line_items",
+   "fieldtype": "Long Text",
+   "label": "Line Items (JSON)"
+  },
+  {
+   "fieldname": "column_break_extract",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gross_amount",
+   "fieldtype": "Currency",
+   "label": "Gross Amount",
+   "options": "currency",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "vat_amount",
+   "fieldtype": "Currency",
+   "label": "VAT Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "kra_pin",
+   "fieldtype": "Data",
+   "label": "KRA PIN"
+  },
+  {
+   "fieldname": "etims_invoice_number",
+   "fieldtype": "Data",
+   "label": "eTIMS Invoice Number"
+  },
+  {
+   "fieldname": "receipt_number",
+   "fieldtype": "Data",
+   "label": "Receipt Number",
+   "search_index": 1
+  },
+  {
+   "fieldname": "expense_claim_type",
+   "fieldtype": "Link",
+   "label": "Expense Claim Type",
+   "options": "Expense Claim Type"
+  },
+  {
+   "fieldname": "claim_section",
+   "fieldtype": "Section Break",
+   "label": "Expense Claim"
+  },
+  {
+   "fieldname": "expense_claim",
+   "fieldtype": "Link",
+   "label": "Expense Claim",
+   "options": "Expense Claim",
+   "read_only": 1
+  },
+  {
+   "fieldname": "needs_claim",
+   "fieldtype": "Check",
+   "label": "Reimbursable (employee paid)",
+   "default": "0"
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Link",
+   "label": "Approval Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reimbursement_journal_entry",
+   "fieldtype": "Link",
+   "label": "Reimbursement Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reimbursed_by",
+   "fieldtype": "Link",
+   "label": "Reimbursed By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reimbursed_at",
+   "fieldtype": "Datetime",
+   "label": "Reimbursed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approval_section",
+   "fieldtype": "Section Break",
+   "label": "Approval"
+  },
+  {
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "label": "Rejection Reason"
+  },
+  {
+   "fieldname": "decided_by",
+   "fieldtype": "Link",
+   "label": "Decided By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "decided_at",
+   "fieldtype": "Datetime",
+   "label": "Decided At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "diagnostics_section",
+   "fieldtype": "Section Break",
+   "label": "Diagnostics",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "confidence",
+   "fieldtype": "Float",
+   "label": "Confidence",
+   "read_only": 1,
+   "precision": "2"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes",
+   "description": "Caption sent with the receipt, if any."
+  },
+  {
+   "fieldname": "validation_errors",
+   "fieldtype": "Small Text",
+   "label": "Validation Errors",
+   "read_only": 1
+  },
+  {
+   "fieldname": "error_message",
+   "fieldtype": "Small Text",
+   "label": "Error Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "raw_extract",
+   "fieldtype": "Long Text",
+   "label": "Raw Extract (verbatim from Claude)",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "is_submittable": 0,
+ "links": [],
+ "modified": "2026-07-21 00:00:00",
+ "module": "UpeoXpense",
+ "name": "Receipt Capture",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "report": 1,
+   "role": "HR User"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
