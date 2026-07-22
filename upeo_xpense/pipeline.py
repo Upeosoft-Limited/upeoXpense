@@ -144,10 +144,8 @@ def ingest(sender_phone, media_url, caption=None, media_key=None, media_type="im
 
 	employee = find_employee(sender_phone)
 	if not employee:
-		_safe_send(
-			sender_phone,
-			"We could not match your number to an employee record. Please contact the admin.",
-		)
+		# Defence in depth: handle_incoming already gates on find_employee, but
+		# never message a non-employee even if ingest is called some other way.
 		return
 
 	try:
